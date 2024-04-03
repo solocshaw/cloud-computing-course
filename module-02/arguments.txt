@@ -1,0 +1,7 @@
+ami-080e1f13689e07408
+t2.micro
+coursera-cc-key2
+sg-07675b4567d923154
+1
+install-env.sh
+module2-tag
