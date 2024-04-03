@@ -1,2 +1,2 @@
-# coursera-cloud-computing
+# cloud-computing
 Repo for Cloud Computing course
