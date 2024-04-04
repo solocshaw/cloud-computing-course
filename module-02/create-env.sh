@@ -20,7 +20,7 @@
 # Fill in the blanks below
 if [ $# = 0 ]
 then
-  echo 'You do not have enough variable in your arugments.txt, perhaps you forgot to run: bash ./create-env.sh $(< ~/arguments.txt)'
+  echo 'You do not have enough variable in your arguments.txt, perhaps you forgot to run: bash ./create-env.sh $(< ~/arguments.txt)'
   exit 1
 else
 echo "Beginning to launch $5 EC2 instances..."
