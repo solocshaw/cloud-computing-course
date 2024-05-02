@@ -28,7 +28,7 @@ echo "Beginning to launch $5 EC2 instances..."
 aws ec2 run-instances \
     --image-id $1 \
     --instance-type $2 \
-    --count $5
+    --count $5 \
     --security-group-ids $4 \
     --key-name $3 \
     --user-data file://$6 \
