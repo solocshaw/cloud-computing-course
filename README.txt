@@ -1,0 +1,3 @@
+This assignment requires you to launch 3 EC2 instances from the commandline of type t2.micro using the keypair and security group ID you created in a file named: create-env.sh.
+
+This script will generate graded output and give you feedback on your deliverable. You are welcome to fix your script and try again in any areas of the grading that fail. Your submission to Coursera will be a create-env-module-02-results.txt file.
