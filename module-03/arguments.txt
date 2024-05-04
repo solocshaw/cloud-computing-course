@@ -1,4 +1,4 @@
-ami-080e1f13689e07408
+ami-09040d770ffe2224f
 t2.micro
 iit-cloud-computing
 sg-07675b4567d923154
