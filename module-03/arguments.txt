@@ -1,6 +1,6 @@
 ami-080e1f13689e07408
 t2.micro
-coursera-cc-key2
+iit-cloud-computing
 sg-07675b4567d923154
 3
 install-env.sh
