@@ -5,28 +5,29 @@ import hashlib
 import sys
 import datetime
 
-###############################################################################
-# This file is used to assess the output of the destroy-env.sh file
-# DO NOT MODIFY this file!!!!
-# But you are welcome to inspect it
-###############################################################################
-
 # Assignment grand total
 grandtotal = 0
-totalPoints = 1
-assessmentName = "module-2-assessment-destroy-test"
+totalPoints = 3
+assessmentName = "module-3-destroy-assessment"
 
 # Documentation Links
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2.html
 
 clientec2 = boto3.client('ec2')
+clientelbv2 = boto3.client('elbv2')
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ec2/client/describe_instances.html
 response = clientec2.describe_instances(
 
 ) # End of function
 
-print("Begin tests for destroy-env.sh module 2...")
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elbv2/client/describe_load_balancers.html
+responseELB = clientelbv2.describe_load_balancers()
+
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elbv2/client/describe_target_groups.html
+responseTG = clientelbv2.describe_target_groups()
+
+print("Begin tests for destroy-env.sh module 3...")
 destroyTestResults = []
 ##############################################################################
 # Check to make that the instances launched are all in a non-running state
@@ -51,6 +52,37 @@ for n in range(0,len(response['Reservations'][0]['Instances'])):
 print('*' * 79)
 print("\r")
 ##############################################################################
+# Check to see if no Target Groups are present
+##############################################################################
+print('*' * 79)
+print("Testing to make sure that there are no Target Groups present...")
+checkOneTargetGroupPresent = False
+if len(responseTG['TargetGroups']) > 0:
+  print("Expecting 0 target groups, received " + str(len(responseTG['TargetGroups'])) + "...")
+  print("Perhaps double check that your destroy-env.sh scripts ran correctly or that your create-env.sh ran without error...")
+else:
+  print("Expecting 0 target groups and received " + str(len(responseTG['TargetGroups'])) + " target groups...")
+  grandtotal += 1
+
+print('*' * 79)
+print("\r")
+##############################################################################
+# Check to see no Load Balancers are present
+##############################################################################
+print('*' * 79)
+print("Testing to make sure that 0 Load Balancers are present...")
+checkOneLoadBalancerPresent = False
+if len(responseELB['LoadBalancers']) > 0:
+  print("Expecting 0 Load-Balancers, received " + str(len(responseELB['LoadBalancers'])) + "load-balancers...")
+  print("Perhaps double check that your destroy-env.sh script ran correctly or that your create-env.sh ran without error...")
+else:
+  checkOneLoadBalancerPresent = True
+  print("Expecting 0 load-balancers and received " + str(len(responseELB['LoadBalancers'])) + "load balancers...")
+  grandtotal += 1
+
+print('*' * 79)
+print("\r")
+##############################################################################
 # Print out the grandtotal and the grade values to result.txt
 ##############################################################################
 print('*' * 79)
@@ -63,7 +95,7 @@ else:
 
 # Write results to a text file for import to the grade system
 # https://www.geeksforgeeks.org/sha-in-python/
-f = open('destroy-env-module-02-results.txt', 'w', encoding="utf-8")
+f = open('destroy-env-module-03-results.txt', 'w', encoding="utf-8")
 
 # Gather sha256 of module-name and grandtotal
 # https://stackoverflow.com/questions/70498432/how-to-hash-a-string-in-python
@@ -84,6 +116,6 @@ resultsdict = {
 print("Writing assessment grade to text file.")
 json.dump(resultsdict,f)
 print("Write successful! Ready to submit your Assessment.")
-print("You should now see a destroy-env-module-02-results.txt file has been generated.")
+print("You should now see a destroy-env-module-03-results.txt file has been generated.")
 f.close
 print('*' * 79)

@@ -2,10 +2,10 @@ ami-080e1f13689e07408
 t2.micro
 coursera-cc-key2
 sg-07675b4567d923154
-1
+3
 install-env.sh
 module3-tag
 sc-tg
 sc-elb
-us-east-1a
-us-east-1b
+us-east-2a
+us-east-2b
