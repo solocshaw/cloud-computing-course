@@ -5,3 +5,7 @@ sg-07675b4567d923154
 3
 install-env.sh
 module3-tag
+sc-tg
+sc-elb
+us-east-1a
+us-east-1b
