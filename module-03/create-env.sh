@@ -36,11 +36,11 @@ echo $SUBNET2B
 
 echo 'Creating the TARGET GROUP and storing the ARN in $TARGETARN...'
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-target-group.html
-TARGETARN=$(aws elbv2 create-target-group)
+TARGETARN=$(aws elbv2 create-target-group --name $8)
 
 echo "Creating ELBv2 Elastic Load Balancer..."
 #https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-load-balancer.html
-ELBARN=$(aws elbv2 create-load-balancer)
+ELBARN=$(aws elbv2 create-load-balancer --tags $9)
 echo $ELBARN
 
 # AWS elbv2 wait for load-balancer available
@@ -54,7 +54,14 @@ aws elbv2 create-listener
 
 echo "Beginning to create and launch instances..."
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/run-instances.html
-aws ec2 run-instances 
+aws ec2 run-instances \
+    --image-id $1 \
+    --instance-type $2 \
+    --count $5 \
+    --security-group-ids $4 \
+    --key-name $3 \
+    --user-data file://$6 \
+    --tag-specifications "ResourceType=instance,Tags=[{Key=module,Value=$7}]"
 
 # Collect Instance IDs
 # https://stackoverflow.com/questions/31744316/aws-cli-filter-or-logic
