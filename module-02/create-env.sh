@@ -31,7 +31,7 @@ aws ec2 run-instances \
     --count $5 \
     --security-group-ids $4 \
     --key-name $3 \
-    --user-data $6 \
+    --user-data file://$6 \
     --tag-specifications "ResourceType=instance,Tags=[{Key=module,Value=$7}]"
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/wait/instance-running.html
