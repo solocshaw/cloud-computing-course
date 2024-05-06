@@ -57,7 +57,7 @@ echo $SUBNET2B
 # Create AWS EC2 Launch Template
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.33/reference/ec2/create-launch-template.html
 echo "Creating the AutoScalingGroup Launch Template..."
-aws ec2 create-launch-template --launch-template-name $12 --launch-template-data file://$ltconfigfile
+aws ec2 create-launch-template --launch-template-name "${12}" --launch-template-data file://$ltconfigfile
 echo "Launch Template created..."
 
 # Retreive the Launch Template ID using a --query
@@ -66,12 +66,12 @@ echo $LAUNCHTEMPLATEID
 
 echo 'Creating the TARGET GROUP and storing the ARN in $TARGETARN'
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-target-group.html
-TARGETARN=$(aws elbv2 create-target-group --name $8 --protocol HTTP --port 80 --target-type instance --vpc-id $VPCID)
+TARGETARN=$(aws elbv2 create-target-group --name "{$8}" --protocol HTTP --port 80 --target-type instance --vpc-id $VPCID)
 echo $TARGETARN
 
 echo "Creating ELBv2 Elastic Load Balancer..."
 #https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-load-balancer.html
-ELBARN=$(aws elbv2 create-load-balancer --name $9 --subnets $SUBNET2A $SUBNET2B)
+ELBARN=$(aws elbv2 create-load-balancer --name "{$9}" --subnets $SUBNET2A $SUBNET2B)
 echo $ELBARN
 
 # Decrease the deregistration timeout (deregisters faster than the default 300 second timeout per instance)
@@ -91,7 +91,7 @@ echo 'Creating Auto Scaling Group...'
 # Create Autoscaling group ASG - needs to come after Target Group is created
 # Create autoscaling group
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/autoscaling/create-auto-scaling-group.html
-aws autoscaling create-auto-scaling-group --auto-scaling-group-name sc-asg --min-size 2 --max-size 5
+aws autoscaling create-auto-scaling-group --auto-scaling-group-name "${13}" --min-size "${14}" --max-size "${15}"
 
 echo 'Waiting for Auto Scaling Group to spin up EC2 instances and attach them to the TargetARN...'
 # Create waiter for registering targets
@@ -114,7 +114,8 @@ fi
 
 # Retreive ELBv2 URL via aws elbv2 describe-load-balancers --query and print it to the screen
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/describe-load-balancers.html
-URL=
+URL=$(aws elbv2 describe-load-balancers --names "${9}" --query 'LoadBalancers[*].DNSName' --output text)
+
 echo $URL
 
 # end of outer fi - based on arguments.txt content
