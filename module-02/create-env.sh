@@ -39,8 +39,10 @@ echo "Waiting until instances are in RUNNING state..."
 
 # Collect your running instance IDS
 # https://stackoverflow.com/questions/31744316/aws-cli-filter-or-logic
-INSTANCEIDS=$(aws ec2 describe-instances --output=text --query 'Reservations[*].Instances[*].InstanceID' --filter "Name=instance-state-name,Values=running,pending")
+# INSTANCEIDS=$(aws ec2 describe-instances --output=text --query 'Reservations[*].Instances[*].InstanceID' --filter "Name=instance-state-name,Values=running,pending")
 
+# echo $INSTANCEIDS
+INSTANCEIDS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values="${7}"" --query "Reservations[*].Instances[*].InstanceId" --output text)
 echo $INSTANCEIDS
 
 # Check to make sure the value is not blank and then wait for Instances to be in the

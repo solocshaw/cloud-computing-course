@@ -8,8 +8,11 @@
 echo "Beginning destroy script for module-02..."
 
 # Collect Instance IDs
-INSTANCEIDS=
+# https://stackoverflow.com/questions/31744316/aws-cli-filter-or-logic
+# INSTANCEIDS=$(aws ec2 describe-instances --output=text --query 'Reservations[*].Instances[*].InstanceID' --filter "Name=instance-state-name,Values=running,pending")
 
+# echo $INSTANCEIDS
+INSTANCEIDS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values="${7}"" --query "Reservations[*].Instances[*].InstanceId" --output text)
 echo $INSTANCEIDS
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/wait/instance-terminated.html
@@ -17,7 +20,7 @@ echo $INSTANCEIDS
 
 if [ "$INSTANCEIDS" != "" ]
   then
-    aws ec2 terminate-instances
+    aws ec2 terminate-instances --instance-ids $INSTANCEIDS
     echo "Waiting for all instances report state as TERMINATED..."
     aws ec2 wait instance-terminated
     echo "Finished destroying instances..."
