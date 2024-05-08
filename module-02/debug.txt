@@ -1,0 +1,85 @@
+Beginning to launch 3 EC2 instances...
+485025951618	r-02e7d41141322aade
+INSTANCES	1	x86_64	uefi-preferred	e6841c8f-1a7f-4e6a-84f1-3de7c2e3e613	legacy-bios	False	True	xen	ami-09040d770ffe2224f	i-0a8a5a5e6fb538471	t2.micro	iit-cloud-computing	2024-05-06T01:16:12+00:00	ip-172-31-38-123.us-east-2.compute.internal	172.31.38.123		/dev/sda1	ebs	True		subnet-0f153d72d6311c60e	hvm	vpc-08af138e57afc825f
+CAPACITYRESERVATIONSPECIFICATION	open
+CPUOPTIONS	1	1
+ENCLAVEOPTIONS	False
+MAINTENANCEOPTIONS	default
+METADATAOPTIONS	enabled	disabled	2	required	disabled	pending
+MONITORING	disabled
+NETWORKINTERFACES		interface	0a:81:84:57:b2:d7	eni-04240c03ef39790a9	485025951618	ip-172-31-38-123.us-east-2.compute.internal	172.31.38.123	True	in-use	subnet-0f153d72d6311c60e	vpc-08af138e57afc825f
+ATTACHMENT	2024-05-06T01:16:12+00:00	eni-attach-0aef921df24e6bab7	True	0	0	attaching
+GROUPS	sg-091d1f9c1e338f7b1	default
+PRIVATEIPADDRESSES	True	ip-172-31-38-123.us-east-2.compute.internal	172.31.38.123
+PLACEMENT	us-east-2c		default
+PRIVATEDNSNAMEOPTIONS	False	False	ip-name
+SECURITYGROUPS	sg-091d1f9c1e338f7b1	default
+STATE	0	pending
+STATEREASON	pending	pending
+TAGS	module	module3-tag
+INSTANCES	2	x86_64	uefi-preferred	e6841c8f-1a7f-4e6a-84f1-3de7c2e3e613	legacy-bios	False	True	xen	ami-09040d770ffe2224f	i-069151e8ab8afaca4	t2.micro	iit-cloud-computing	2024-05-06T01:16:12+00:00	ip-172-31-41-158.us-east-2.compute.internal	172.31.41.158		/dev/sda1	ebs	True		subnet-0f153d72d6311c60e	hvm	vpc-08af138e57afc825f
+CAPACITYRESERVATIONSPECIFICATION	open
+CPUOPTIONS	1	1
+ENCLAVEOPTIONS	False
+MAINTENANCEOPTIONS	default
+METADATAOPTIONS	enabled	disabled	2	required	disabled	pending
+MONITORING	disabled
+NETWORKINTERFACES		interface	0a:86:eb:67:14:91	eni-003706344683882e5	485025951618	ip-172-31-41-158.us-east-2.compute.internal	172.31.41.158	True	in-use	subnet-0f153d72d6311c60e	vpc-08af138e57afc825f
+ATTACHMENT	2024-05-06T01:16:12+00:00	eni-attach-05604a68e47e8bee0	True	0	0	attaching
+GROUPS	sg-091d1f9c1e338f7b1	default
+PRIVATEIPADDRESSES	True	ip-172-31-41-158.us-east-2.compute.internal	172.31.41.158
+PLACEMENT	us-east-2c		default
+PRIVATEDNSNAMEOPTIONS	False	False	ip-name
+SECURITYGROUPS	sg-091d1f9c1e338f7b1	default
+STATE	0	pending
+STATEREASON	pending	pending
+TAGS	module	module3-tag
+INSTANCES	0	x86_64	uefi-preferred	e6841c8f-1a7f-4e6a-84f1-3de7c2e3e613	legacy-bios	False	True	xen	ami-09040d770ffe2224f	i-073427766c060292e	t2.micro	iit-cloud-computing	2024-05-06T01:16:12+00:00	ip-172-31-33-91.us-east-2.compute.internal	172.31.33.91		/dev/sda1	ebs	True		subnet-0f153d72d6311c60e	hvm	vpc-08af138e57afc825f
+CAPACITYRESERVATIONSPECIFICATION	open
+CPUOPTIONS	1	1
+ENCLAVEOPTIONS	False
+MAINTENANCEOPTIONS	default
+METADATAOPTIONS	enabled	disabled	2	required	disabled	pending
+MONITORING	disabled
+NETWORKINTERFACES		interface	0a:60:65:9d:a2:19	eni-065a409345ecf10c8	485025951618	ip-172-31-33-91.us-east-2.compute.internal	172.31.33.91	True	in-use	subnet-0f153d72d6311c60e	vpc-08af138e57afc825f
+ATTACHMENT	2024-05-06T01:16:12+00:00	eni-attach-05e1b692756c82f94	True	0	0	attaching
+GROUPS	sg-091d1f9c1e338f7b1	default
+PRIVATEIPADDRESSES	True	ip-172-31-33-91.us-east-2.compute.internal	172.31.33.91
+PLACEMENT	us-east-2c		default
+PRIVATEDNSNAMEOPTIONS	False	False	ip-name
+SECURITYGROUPS	sg-091d1f9c1e338f7b1	default
+STATE	0	pending
+STATEREASON	pending	pending
+TAGS	module	module3-tag
+Waiting until instances are in RUNNING state...
+
+There are no running or pending values in $INSTANCEIDS to wait for...
+Begin tests for create-env.sh module 2...
+*******************************************************************************
+Testing for the correct number of EC2 instances launched and in the RUNNING state...
+Correct number of EC2 instances created, expecting 3, received 3.
+InstanceID of: i-0a8a5a5e6fb538471
+InstanceID of: i-069151e8ab8afaca4
+InstanceID of: i-073427766c060292e
+*******************************************************************************
+
+*******************************************************************************
+Testing to make sure the running EC2 instances all have the tag of module2-tag...
+Incorrect tag set for Ec2 Instance: i-0a8a5a5e6fb538471. Tag of: module3-tag set...
+Incorrect tag set for Ec2 Instance: i-069151e8ab8afaca4. Tag of: module3-tag set...
+Incorrect tag set for Ec2 Instance: i-073427766c060292e. Tag of: module3-tag set...
+Incorrect. Some Ec2 Instances have the incorrect tag. Go back to your arguments.txt file and take a look at the value for $7.
+*******************************************************************************
+
+*******************************************************************************
+Testing to make sure the running EC2 instances are all of type t2.micro...
+InstanceID of: i-0a8a5a5e6fb538471 and of InstanceType: t2.micro
+InstanceID of: i-069151e8ab8afaca4 and of InstanceType: t2.micro
+InstanceID of: i-073427766c060292e and of InstanceType: t2.micro
+Correct Ec2 Instance Type launched for all EC2 instances.
+*******************************************************************************
+
+*******************************************************************************
+Testing for the correct HTTP status (200) response from the webserver on the EC2 instances...
+http://ec2-18-189-28-242.us-east-2.compute.amazonaws.com
+Error Connecting: HTTPConnectionPool(host='ec2-18-189-28-242.us-east-2.compute.amazonaws.com', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f3119cd2470>: Failed to establish a new connection: [Errno 111] Connection refused'))
