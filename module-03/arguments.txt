@@ -4,7 +4,7 @@ iit-cloud-computing
 sg-091d1f9c1e338f7b1
 3
 install-env.sh
-module4-tag
+module3-tag
 sc-tg
 sc-elb
 us-east-2a
