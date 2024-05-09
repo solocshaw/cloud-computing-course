@@ -95,7 +95,7 @@ echo 'Creating Auto Scaling Group...'
 # aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=${12},Version=default" --min-size $14 --max-size $15 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arn $TARGETARN --tags Key=module,Value=4,PropagateAtLaunch=true
 aws autoscaling create-auto-scaling-group \
   --auto-scaling-group-name ${13} \
-  --launch-template ${12} \
+  --launch-template "LaunchTemplateName=${12},Version='default'" \
   --min-size ${14} \
   --max-size ${15} \
   --desired-capacity ${16} \
