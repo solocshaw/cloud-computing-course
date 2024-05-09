@@ -9,8 +9,8 @@ sc-tg
 sc-elb
 us-east-2a
 us-east-2b
-sc-lt
-sc-asg
+sclt
+scasg
 2
 5
 3
