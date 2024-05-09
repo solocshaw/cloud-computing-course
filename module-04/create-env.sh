@@ -88,6 +88,15 @@ echo "Load balancer available..."
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/create-listener.html
 aws elbv2 create-listener --load-balancer-arn $ELBARN --protocol HTTP --port 80 --default-actions Type=forward,TargetGroupArn=$TARGETARN
 
+echo "Auto Scaling Group Name: $13"
+echo "Launch Template Name: $12"
+echo "Min Size: $14"
+echo "Max Size: $15"
+echo "Desired Capacity: $16"
+echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
+echo "Target Group ARN: $TARGETARN"
+echo "ELB ARN: $ELBARN"
+
 echo 'Creating Auto Scaling Group...'
 # Create Autoscaling group ASG - needs to come after Target Group is created
 # Create autoscaling group
