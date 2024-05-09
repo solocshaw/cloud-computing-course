@@ -95,6 +95,14 @@ echo 'Creating Auto Scaling Group...'
 # aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=${12},Version=default" --min-size $14 --max-size $15 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arn $TARGETARN --tags Key=module,Value=4,PropagateAtLaunch=true
 aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=$12,Version=default" --min-size $14 --max-size $15 --desired-capacity $16 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arns $TARGETARN
 
+echo "Auto Scaling Group Name: $13"
+echo "Launch Template Name: $12"
+echo "Min Size: $14"
+echo "Max Size: $15"
+echo "Desired Capacity: $16"
+echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
+echo "Target Group ARN: $TARGETARN"
+
 echo 'Waiting for Auto Scaling Group to spin up EC2 instances and attach them to the TargetARN...'
 # Create waiter for registering targets
 # https://docs.aws.amazon.com/cli/latest/reference/elbv2/wait/target-in-service.html
