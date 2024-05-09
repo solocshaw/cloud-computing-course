@@ -54,19 +54,10 @@ SUBNET2B=$(aws ec2 describe-subnets --output=text --query='Subnets[*].SubnetId' 
 echo $SUBNET2A
 echo $SUBNET2B
 
-echo "Auto Scaling Group Name: $13"
-echo "Launch Template Name: $12"
-echo "Min Size: $14"
-echo "Max Size: $15"
-echo "Desired Capacity: $16"
-echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
-echo "Target Group ARN: $TARGETARN"
-echo "ELB ARN: $ELBARN"
-
 # Create AWS EC2 Launch Template
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.33/reference/ec2/create-launch-template.html
 echo "Creating the AutoScalingGroup Launch Template..."
-aws ec2 create-launch-template --launch-template-name $12 --launch-template-data file://$ltconfigfile
+aws ec2 create-launch-template --launch-template-name ${12} --launch-template-data file://$ltconfigfile
 echo "Launch Template created..."
 
 # Retreive the Launch Template ID using a --query
@@ -103,22 +94,13 @@ echo 'Creating Auto Scaling Group...'
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/autoscaling/create-auto-scaling-group.html
 # aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=${12},Version=default" --min-size $14 --max-size $15 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arn $TARGETARN --tags Key=module,Value=4,PropagateAtLaunch=true
 aws autoscaling create-auto-scaling-group \
-  --auto-scaling-group-name "$13" \
-  --launch-template "LaunchTemplateName=$12,Version=default" \
-  --min-size "$14" \
-  --max-size "$15" \
-  --desired-capacity "$16" \
+  --auto-scaling-group-name ${13} \
+  --launch-template "LaunchTemplateName=${12},Version=default" \
+  --min-size ${14} \
+  --max-size ${15} \
+  --desired-capacity ${16} \
   --vpc-zone-identifier $SUBNET2A,$SUBNET2B \
   --target-group-arns $TARGETARN
-
-echo "Auto Scaling Group Name: $13"
-echo "Launch Template Name: $12"
-echo "Min Size: $14"
-echo "Max Size: $15"
-echo "Desired Capacity: $16"
-echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
-echo "Target Group ARN: $TARGETARN"
-echo "ELB ARN: $ELBARN"
 
 echo 'Waiting for Auto Scaling Group to spin up EC2 instances and attach them to the TargetARN...'
 # Create waiter for registering targets
