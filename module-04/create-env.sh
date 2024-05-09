@@ -71,7 +71,7 @@ echo $TARGETARN
 
 echo "Creating ELBv2 Elastic Load Balancer..."
 #https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-load-balancer.html
-ELBARN=$(aws elbv2 create-load-balancer --name $9 --subnets $SUBNET2A $SUBNET2B)
+ELBARN=$(aws elbv2 create-load-balancer --name $9 --subnets $SUBNET2A $SUBNET2B --security-groups $4)
 echo $ELBARN
 
 # Decrease the deregistration timeout (deregisters faster than the default 300 second timeout per instance)
@@ -91,7 +91,7 @@ echo 'Creating Auto Scaling Group...'
 # Create Autoscaling group ASG - needs to come after Target Group is created
 # Create autoscaling group
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/autoscaling/create-auto-scaling-group.html
-aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=${12},Version=default" --min-size $14 --max-size $15 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arns $TARGETARN --tags Key=module,Value=4,PropagateAtLaunch=true
+aws autoscaling create-auto-scaling-group --auto-scaling-group-name $13 --launch-template "LaunchTemplateName=${12},Version=default" --min-size $14 --max-size $15 --vpc-zone-identifier $SUBNET2A,$SUBNET2B --target-group-arn $TARGETARN --tags Key=module,Value=4,PropagateAtLaunch=true
 
 echo 'Waiting for Auto Scaling Group to spin up EC2 instances and attach them to the TargetARN...'
 # Create waiter for registering targets
