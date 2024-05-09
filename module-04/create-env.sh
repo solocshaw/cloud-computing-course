@@ -54,6 +54,15 @@ SUBNET2B=$(aws ec2 describe-subnets --output=text --query='Subnets[*].SubnetId' 
 echo $SUBNET2A
 echo $SUBNET2B
 
+echo "Auto Scaling Group Name: $13"
+echo "Launch Template Name: $12"
+echo "Min Size: $14"
+echo "Max Size: $15"
+echo "Desired Capacity: $16"
+echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
+echo "Target Group ARN: $TARGETARN"
+echo "ELB ARN: $ELBARN"
+
 # Create AWS EC2 Launch Template
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.33/reference/ec2/create-launch-template.html
 echo "Creating the AutoScalingGroup Launch Template..."
@@ -87,15 +96,6 @@ echo "Load balancer available..."
 # create AWS elbv2 listener for HTTP on port 80
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/create-listener.html
 aws elbv2 create-listener --load-balancer-arn $ELBARN --protocol HTTP --port 80 --default-actions Type=forward,TargetGroupArn=$TARGETARN
-
-echo "Auto Scaling Group Name: $13"
-echo "Launch Template Name: $12"
-echo "Min Size: $14"
-echo "Max Size: $15"
-echo "Desired Capacity: $16"
-echo "Subnet IDs: $SUBNET2A, $SUBNET2B"
-echo "Target Group ARN: $TARGETARN"
-echo "ELB ARN: $ELBARN"
 
 echo 'Creating Auto Scaling Group...'
 # Create Autoscaling group ASG - needs to come after Target Group is created
