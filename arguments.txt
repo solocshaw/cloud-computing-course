@@ -4,7 +4,7 @@ iit-cloud-computing
 sg-091d1f9c1e338f7b1
 3
 install-env.sh
-module5-tag
+module-final-tag
 sc-tg
 sc-elb
 us-east-2a
@@ -15,6 +15,8 @@ scasg
 5
 3
 us-east-2
-10
+15
 scbucket1
 scbucket2
+sc-secreet
+sc-db
