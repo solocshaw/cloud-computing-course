@@ -188,7 +188,7 @@ PASSVALUE=$(aws secretsmanager get-secret-value --secret-id $SECRET_ID --output=
 echo "******************************************************************************"
 echo "Creating ${22} RDS instances..."
 echo "******************************************************************************"
-aws rds create-db-instance --db-instance-identifier ${22} --db-instance-class db.t3.micro --engine mysql --master-username $USERVALUE --master-user-password $PASSVALUE --allocated-storage --db-name employee_database --tags="Key=assessment,Value=${7}"
+aws rds create-db-instance --db-name ${22} --db-instance-identifier ${22} --db-instance-class db.t3.micro --engine mysql --master-username $USERVALUE --master-user-password $PASSVALUE --allocated-storage --db-name employee_database --tags="Key=assessment,Value=${7}"
 
 # Add wait command for db-instance available
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/wait/db-instance-available.html
@@ -196,7 +196,7 @@ echo "**************************************************************************
 echo "Waiting for RDS instance: ${22} to be created..."
 echo "This might take around 5-15 minutes..."
 echo "******************************************************************************"
-aws rds wait db-instance-available --db-instance-identifier ${22}
+aws rds wait db-instance-available --db-name ${22} --db-instance-identifier ${22}
 echo "******************************************************************************"
 echo "RDS instance: ${22} created and in available state..."
 echo "******************************************************************************"
@@ -204,7 +204,7 @@ echo "**************************************************************************
 echo "******************************************************************************"
 echo "Creating RDS instance: ${22}-read-replica..."
 echo "******************************************************************************"
-aws rds create-db-instance-read-replica --db-instance-identifier ${22} --source-db-instance-identifier ${22} --tags="Key=assessment,Value=${7}"
+aws rds create-db-instance-read-replica --db-name ${22} --db-instance-identifier ${22} --source-db-instance-identifier ${22} --tags="Key=assessment,Value=${7}"
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/wait/db-instance-available.html
 echo "******************************************************************************"
@@ -219,10 +219,10 @@ echo "**************************************************************************
 echo "******************************************************************************"
 echo "Retrieving the RDS Endpoint Address and printing to the screen..."
 echo "******************************************************************************"
-RDS_Address=$(aws rds describe-db-instances --db-instance-identifier ${22} --query "DBInstances[0].Endpoint.Address")
+RDS_Address=$(aws rds describe-db-instances --db-name ${22} --db-instance-identifier ${22} --query "DBInstances[0].Endpoint.Address")
 echo $RDS_Address
 echo "Retrieving the RDS Read Replica Endpoint Address and printing to the screen..."
-RDS_RR_Address=$(aws rds describe-db-instances --db-instance-identifier ${22}-read-replica --query "DBInstances[0].Endpoint.Address")
+RDS_RR_Address=$(aws rds describe-db-instances --db-name ${22} --db-instance-identifier ${22}-read-replica --query "DBInstances[0].Endpoint.Address")
 echo $RDS_RR_Address
 
 # end of outer fi - based on arguments.txt content
