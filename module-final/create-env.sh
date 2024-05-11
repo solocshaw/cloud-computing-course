@@ -67,18 +67,18 @@ echo $LAUNCHTEMPLATEID
 
 echo "Creating the TARGET GROUP and storing the ARN in \$TARGETARN"
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-target-group.html
-TARGETARN=$(aws elbv2 create-target-group --name  --protocol  --port  --target-type instance --vpc-id $VPCID --query="")
+TARGETARN=$(aws elbv2 create-target-group --name $8 --protocol HTTP --port 80 --target-type instance --vpc-id $VPCID --query 'TargetGroups[0].TargetGroupArn' --output text)
 echo $TARGETARN
 
 echo "Creating ELBv2 Elastic Load Balancer..."
 #https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-load-balancer.html
-ELBARN=$(aws elbv2 create-load-balancer --name  --security-groups  --subnets  --query='')
+ELBARN=$(aws elbv2 create-load-balancer --name $9 --subnets $SUBNET2A $SUBNET2B --security-groups $4 --query 'LoadBalancers[0].LoadBalancerArn' --output text)
 echo $ELBARN
 
 # AWS elbv2 wait for load-balancer available
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/wait/load-balancer-available.html
 echo "Waiting for load balancer to be available..."
-aws elbv2 wait load-balancer-available --load-balancer-arns
+aws elbv2 wait load-balancer-available --load-balancer-arns $ELBARN
 echo "Load balancer available..."
 # create AWS elbv2 listener for HTTP on port 80
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/create-listener.html
@@ -112,7 +112,7 @@ INSTANCEIDS=$(aws ec2 describe-instances --output=text --query 'Reservations[*].
 
 if [ "$INSTANCEIDS" != "" ]
   then
-    aws ec2 wait instance-running --instance-ids 
+    aws ec2 wait instance-running --instance-ids $INSTANCEIDS
     echo "Finished launching instances..."
   else
     echo 'There are no running or pending values in $INSTANCEIDS to wait for...'
@@ -123,7 +123,7 @@ fi
 echo "Creating S3 bucket: ${19}..."
 aws s3api create-bucket \
     --bucket ${19} \
-    --region us-east-1
+    --region us-east-2
 echo "Created S3 bucket: ${19}..."
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/wait/bucket-exists.html
@@ -134,7 +134,7 @@ echo "Bucket ${19} is in a ready state..."
 echo "Creating S3 bucket: ${20}..."
 aws s3api create-bucket \
     --bucket ${20} \
-    --region us-east-1
+    --region us-east-2
 echo "Created S3 bucket: ${20}..."
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/wait/bucket-exists.html
@@ -170,7 +170,7 @@ aws s3 ls s3://${20}
 
 # Retreive ELBv2 URL via aws elbv2 describe-load-balancers --query and print it to the screen
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/describe-load-balancers.html
-URL=$(aws elbv2 describe-load-balancers --load-balancer-arns  --query='LoadBalancers[*].DNSName' --output text)
+URL=$(aws elbv2 describe-load-balancers --load-balancer-arns $ELBARN --query='LoadBalancers[*].DNSName' --output text)
 echo $URL
 
 SECRET_ID=$(aws secretsmanager list-secrets --filters Key=name,Values=${21} --query 'SecretList[*].ARN')
@@ -183,7 +183,7 @@ PASSVALUE=$(aws secretsmanager get-secret-value --secret-id $SECRET_ID --output=
 echo "******************************************************************************"
 echo "Creating ${22} RDS instances..."
 echo "******************************************************************************"
-aws rds create-db-instance --db-instance-identifier --db-instance-class db.t3.micro --engine --master-username $USERVALUE --master-user-password $PASSVALUE --allocated-storage --db-name employee_database --tags="Key=assessment,Value=${7}"
+aws rds create-db-instance --db-instance-identifier ${22} --db-instance-class db.t3.micro --engine mysql --master-username $USERVALUE --master-user-password $PASSVALUE --allocated-storage --db-name employee_database --tags="Key=assessment,Value=${7}"
 
 # Add wait command for db-instance available
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/wait/db-instance-available.html
@@ -191,7 +191,7 @@ echo "**************************************************************************
 echo "Waiting for RDS instance: ${22} to be created..."
 echo "This might take around 5-15 minutes..."
 echo "******************************************************************************"
-aws rds wait db-instance-available --db-instance-identifier 
+aws rds wait db-instance-available --db-instance-identifier ${22}
 echo "******************************************************************************"
 echo "RDS instance: ${22} created and in available state..."
 echo "******************************************************************************"
