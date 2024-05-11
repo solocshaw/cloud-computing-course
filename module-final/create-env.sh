@@ -58,7 +58,7 @@ echo $SUBNET2A
 echo $SUBNET2B
 
 echo "Creating the AutoScalingGroup Launch Template..."
-aws ec2 create-launch-template --launch-template-name  --version-description AutoScalingVersion1 --launch-template-data file://config.json --region ${17}
+aws ec2 create-launch-template --launch-template-name ${12} --version-description AutoScalingVersion1 --launch-template-data file://config.json --region ${17}
 echo "Launch Template created..."
 
 # Launch Template Id
@@ -90,7 +90,7 @@ echo 'Creating Auto Scaling Group...'
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/autoscaling/create-auto-scaling-group.html
 aws autoscaling create-auto-scaling-group \
     --auto-scaling-group-name ${13} \
-    --launch-template LaunchTemplateId=$LAUNCHTEMPLATEID,Version=1 \
+    --launch-template LaunchTemplateName=${12},Version=1 \
     --target-group-arns $TARGETARN \
     --health-check-grace-period 600 \
     --min-size ${14} \
