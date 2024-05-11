@@ -58,11 +58,12 @@ echo $SUBNET2A
 echo $SUBNET2B
 
 echo "Creating the AutoScalingGroup Launch Template..."
-aws ec2 create-launch-template --launch-template-name  --version-description AutoScalingVersion1 --launch-template-data file://config.json --region
+aws ec2 create-launch-template --launch-template-name  --version-description AutoScalingVersion1 --launch-template-data file://config.json --region ${17}
 echo "Launch Template created..."
 
 # Launch Template Id
-LAUNCHTEMPLATEID=
+LAUNCHTEMPLATEID=$(aws ec2 describe-launch-templates --filters "Name=launch-template-name,Values=MyLaunchTemplateName" --query "LaunchTemplates[*].LaunchTemplateId" --output text)
+echo $LAUNCHTEMPLATEID
 
 echo "Creating the TARGET GROUP and storing the ARN in \$TARGETARN"
 # https://awscli.amazonaws.com/v2/documentation/api/2.0.34/reference/elbv2/create-target-group.html
@@ -88,21 +89,21 @@ echo 'Creating Auto Scaling Group...'
 # Create autoscaling group
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/autoscaling/create-auto-scaling-group.html
 aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name  \
-    --launch-template LaunchTemplateId=$LAUNCHTEMPLATEID \
-    --target-group-arns  \
+    --auto-scaling-group-name ${13} \
+    --launch-template LaunchTemplateId=$LAUNCHTEMPLATEID,Version=1 \
+    --target-group-arns $TARGETARN \
     --health-check-grace-period 600 \
-    --min-size  \
-    --max-size  \
-    --desired-capacity  \
-    --availability-zones  \
+    --min-size ${14} \
+    --max-size ${15} \
+    --desired-capacity ${16} \
+    --availability-zones ${10} ${11} \
     --health-check-type EC2 \
     --tags "ResourceId=${13},ResourceType=auto-scaling-group,Key=assessment,Value=${7},PropagateAtLaunch=true" 
 
 echo 'Waiting for Auto Scaling Group to spin up EC2 instances and attach them to the TargetARN...'
 # Create waiter for registering targets
 # https://docs.aws.amazon.com/cli/latest/reference/elbv2/wait/target-in-service.html
-aws elbv2 wait target-in-service --target-group-arn 
+aws elbv2 wait target-in-service --target-group-arn $TARGETARN
 echo "Targets attached to Auto Scaling Group..."
 
 # Collect Instance IDs
@@ -121,7 +122,7 @@ fi
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/index.html
 echo "Creating S3 bucket: ${19}..."
 aws s3api create-bucket \
-    --bucket \
+    --bucket ${19} \
     --region us-east-1
 echo "Created S3 bucket: ${19}..."
 
@@ -132,7 +133,7 @@ echo "Bucket ${19} is in a ready state..."
 
 echo "Creating S3 bucket: ${20}..."
 aws s3api create-bucket \
-    --bucket \
+    --bucket ${20} \
     --region us-east-1
 echo "Created S3 bucket: ${20}..."
 
@@ -169,7 +170,7 @@ aws s3 ls s3://${20}
 
 # Retreive ELBv2 URL via aws elbv2 describe-load-balancers --query and print it to the screen
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/describe-load-balancers.html
-URL=$(aws elbv2 describe-load-balancers --load-balancer-arns  --query='')
+URL=$(aws elbv2 describe-load-balancers --load-balancer-arns  --query='LoadBalancers[*].DNSName' --output text)
 echo $URL
 
 SECRET_ID=$(aws secretsmanager list-secrets --filters Key=name,Values=${21} --query 'SecretList[*].ARN')
