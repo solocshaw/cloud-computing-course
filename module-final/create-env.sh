@@ -129,6 +129,8 @@ echo "Created S3 bucket: ${19}..."
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/wait/bucket-exists.html
 echo "Waiting for bucket ${19} to be in a ready state..."
 # add a s3api wait for bucket here!!!!!!!!!!!!!!!!!!!
+aws s3api bucket-exists \
+    --bucket ${19} \
 echo "Bucket ${19} is in a ready state..."
 
 echo "Creating S3 bucket: ${20}..."
@@ -140,6 +142,8 @@ echo "Created S3 bucket: ${20}..."
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/wait/bucket-exists.html
 echo "Waiting for bucket ${20} to be in a ready state..."
 # add a s3api wait for bucket here!!!!!!!!!!!!!!!!!!!
+aws s3api bucket-exists \
+    --bucket ${20} \
 echo "Bucket ${20} is in a ready state..."
 
 # S3 commands
