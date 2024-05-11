@@ -199,7 +199,7 @@ echo "**************************************************************************
 echo "******************************************************************************"
 echo "Creating RDS instance: ${22}-read-replica..."
 echo "******************************************************************************"
-aws rds create-db-instance-read-replica --db-instance-identifier --source-db-instance-identifier --tags="Key=assessment,Value=${7}"
+aws rds create-db-instance-read-replica --db-instance-identifier ${22} --source-db-instance-identifier ${22} --tags="Key=assessment,Value=${7}"
 
 # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/wait/db-instance-available.html
 echo "******************************************************************************"
