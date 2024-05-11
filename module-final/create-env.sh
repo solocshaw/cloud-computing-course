@@ -122,7 +122,7 @@ fi
 echo "Creating S3 bucket: ${19}..."
 aws s3api create-bucket \
     --bucket ${19} \
-    --region us-east-2 \
+    --region us-east-1 \
     --create-bucket-configuration LocationConstraint=us-west-2
 echo "Created S3 bucket: ${19}..."
 
@@ -136,7 +136,7 @@ echo "Bucket ${19} is in a ready state..."
 echo "Creating S3 bucket: ${20}..."
 aws s3api create-bucket \
     --bucket ${20} \
-    --region us-east-2 \
+    --region us-east-1 \
     --create-bucket-configuration LocationConstraint=us-west-2
 echo "Created S3 bucket: ${20}..."
 
@@ -177,6 +177,8 @@ aws s3 ls s3://${20}
 #https://awscli.amazonaws.com/v2/documentation/api/latest/reference/elbv2/describe-load-balancers.html
 URL=$(aws elbv2 describe-load-balancers --load-balancer-arns $ELBARN --query='LoadBalancers[*].DNSName' --output text)
 echo $URL
+
+aws secretsmanager --create-secret ${21}
 
 SECRET_ID=$(aws secretsmanager list-secrets --filters Key=name,Values=${21} --query 'SecretList[*].ARN')
 
